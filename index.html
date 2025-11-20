@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DARK DISCIPLINE</title>
+    <title>ETERNAL NO NUT</title>
     <style>
         * {
             margin: 0;
@@ -534,7 +534,7 @@
                 <label>Selecione seu Perfil</label>
                 <select id="username-select">
                     <option value="">-- Escolha --</option>
-                    <option value="Marcos V.">Marcos V.</option>
+                    <option value="Marcos V.">Marcus V.</option>
                     <option value="Henrique F.">Henrique F.</option>
                     <option value="Heitor V.">Heitor V.</option>
                     <option value="Tulio P.">Tulio P.</option>
@@ -558,7 +558,7 @@
         const passwords = {
             'Marcos V.': 'MarcolaDasBucetim',
             'Henrique F.': 'HenriqueChigurh',
-            'Heitor V.': 'HectorTheFuckingCreed',
+            'Heitor V.': 'Hector',
             'Tulio P.': 'TulioMontana',
             'Gabriel D.': 'GabrielMorgan'
         };
@@ -566,11 +566,11 @@
         const startDate = new Date('2025-11-19T15:07:00-03:00');
 
         let warriors = {
-            'Marcos V.': { fullName: 'Marcos Vinicius Miranda', days: 0, alive: true, ripMsg: 'FALLEN WEAKLING - Marcos Vinicius Miranda se rendeu ao vício no dia {DIAS}. A disciplina nunca foi sua força. A fraqueza o consumiu. RIP FOREVER.' },
-            'Henrique F.': { fullName: 'Henrique Faria', days: 0, alive: true, ripMsg: 'FALLEN WARRIOR - Henrique Faria caiu no dia {DIAS}. Você foi mais longe que muitos. Respeito. RIP.' },
-            'Heitor V.': { fullName: 'Heitor Vieira de Oliveira', days: 0, alive: true, ripMsg: 'FALLEN SOLDIER - Heitor Vieira caiu no dia {DIAS}. Você mostrou disciplina. Volte mais forte. RIP.' },
-            'Tulio P.': { fullName: 'Tulio Pessoa Mota', days: 0, alive: true, ripMsg: 'FALLEN MEDIOCRE - Tulio Pessoa caiu no dia {DIAS}. Você tinha potencial, mas perdeu a essência. RIP.' },
-            'Gabriel D.': { fullName: 'Gabriel Damasceno', days: 0, alive: true, ripMsg: 'FALLEN WARRIOR - Gabriel Damasceno caiu no dia {DIAS}. Que sirva de lição. RIP.' }
+            'Marcos V.': { fullName: 'Marcos Vinicius Miranda', days: 0, alive: true, ripMsg: 'FALLEN WEAKLING - Marcos Vinicius Miranda se rendeu ao vício no dia {DIAS}. Você foi um grande bosta. A luxúria o consumiu, que era bem o esperado. RIP.' },
+            'Henrique F.': { fullName: 'Henrique Faria', days: 0, alive: true, ripMsg: 'FALLEN WARRIOR - Henrique Faria caiu no dia {DIAS}. Você era o mais fodastico de todos, sua morte nunca seria esperado, ate os mais fortes morrem. Respeito. RIP.' },
+            'Heitor V.': { fullName: 'Heitor Vieira de Oliveira', days: 0, alive: true, ripMsg: 'FALLEN WARRIOR - Heitor Vieira caiu no dia {DIAS}. Você era pra ter sido um dos melhores, mas ate os mais fortes morrem. RIP.' },
+            'Tulio P.': { fullName: 'Tulio Pessoa Mota', days: 0, alive: true, ripMsg: 'FALLEN MEDIOCRE - Tulio Pessoa caiu no dia {DIAS}. Você tinha potencial, mas jogou tudo fora por causa de bucetim. RIP.' },
+            'Gabriel D.': { fullName: 'Gabriel Damasceno', days: 0, alive: true, ripMsg: 'FALLEN MEDIOCRE - Gabriel Damasceno caiu no dia {DIAS}. Decepcao total. RIP.' }
         };
 
         let currentUser = null;
@@ -618,12 +618,12 @@
                 { dias: 6, title: 'GUERREIRO', emoji: '⚔️' },
                 { dias: 9, title: 'DISCIPLINADO', emoji: '🔥' },
                 { dias: 12, title: 'HARDENED', emoji: '💪' },
-                { dias: 15, title: 'RESILIENTE', emoji: '🛡️' },
+                { dias: 15, title: 'NAVY SEAL', emoji: '🛡️' },
                 { dias: 20, title: 'MONGE', emoji: '🧘' },
-                { dias: 25, title: 'FORJADO', emoji: '⚡' },
-                { dias: 30, title: 'MESTRE', emoji: '👑' },
-                { dias: 40, title: 'PALADINO', emoji: '🏆' },
-                { dias: 50, title: 'STAY HARD', emoji: '🔱' }
+                { dias: 25, title: 'FODASTICO', emoji: '⚡' },
+                { dias: 30, title: 'DISCIPLINA EXTREMA', emoji: '👑' },
+                { dias: 40, title: 'STAY HARD', emoji: '🏆' },
+                { dias: 50, title: 'DAVID GOGGINS', emoji: '🔱' }
             ];
 
             for (let i = titles.length - 1; i >= 0; i--) {
@@ -767,7 +767,7 @@
             if (warriors[currentUser].alive) {
                 warriors[currentUser].alive = false;
                 warriors[currentUser].days = calculateDays(currentUser);
-                alert('💀 Que pena! Você foi eliminado.');
+                alert('💀 Voce tem que se fuder muito mesmo! Você foi eliminado.');
                 showProfile();
                 loadLeaderboard();
             }
