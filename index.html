@@ -26,7 +26,6 @@
             padding: 20px;
         }
         
-        /* HEADER */
         .header {
             display: flex;
             justify-content: space-between;
@@ -62,6 +61,7 @@
         .header-buttons {
             display: flex;
             gap: 15px;
+            align-items: center;
         }
         
         .btn-header {
@@ -82,6 +82,10 @@
             box-shadow: 0 5px 15px rgba(255, 68, 68, 0.3);
         }
         
+        .btn-profile {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+        }
+        
         .user-badge {
             background: rgba(255, 68, 68, 0.1);
             border: 2px solid #ff4444;
@@ -93,7 +97,6 @@
             font-size: 0.85em;
         }
         
-        /* VIEWS */
         .view {
             display: none;
         }
@@ -102,7 +105,6 @@
             display: block;
         }
         
-        /* HOMEPAGE - LEADERBOARD */
         .title {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 2em;
@@ -128,6 +130,7 @@
             grid-template-columns: 80px 1fr 200px;
             align-items: center;
             gap: 20px;
+            overflow: hidden;
         }
         
         .warrior-card:hover {
@@ -136,8 +139,32 @@
         }
         
         .warrior-card.dead {
-            background: rgba(40, 20, 20, 0.8);
-            opacity: 0.6;
+            background: rgba(60, 20, 20, 0.9);
+            border-color: #ff0000;
+        }
+        
+        .warrior-card.dead::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #ff0000;
+            transform: translateY(-50%);
+            z-index: 5;
+        }
+        
+        .warrior-card.dead::after {
+            content: 'RIP';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2em;
+            color: #ff0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+            z-index: 10;
         }
         
         .warrior-rank {
@@ -158,6 +185,11 @@
             font-size: 1.3em;
             font-weight: bold;
             color: #e0e0e0;
+        }
+        
+        .warrior-name.dead-name {
+            text-decoration: line-through;
+            color: #ff6666;
         }
         
         .warrior-title {
@@ -198,7 +230,23 @@
             text-transform: uppercase;
         }
         
-        /* LOGIN MODAL */
+        .warrior-close-call {
+            font-size: 0.8em;
+            color: #ffa500;
+            margin-top: 5px;
+        }
+        
+        .rip-message-card {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            color: #ff6666;
+            font-style: italic;
+        }
+        
         .modal {
             display: none;
             position: fixed;
@@ -315,7 +363,6 @@
             border: 2px solid #ff4444;
         }
         
-        /* PROFILE VIEW */
         .profile-header {
             background: rgba(20, 25, 50, 0.9);
             border: 2px solid #ff4444;
@@ -353,7 +400,7 @@
         
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin: 30px 0;
         }
@@ -417,13 +464,14 @@
             font-size: 1em;
         }
         
-        .btn-win {
-            background: #4ade80;
+        .btn-close-call {
+            background: #ffa500;
             color: #0a0e27;
         }
         
-        .btn-win:hover {
+        .btn-close-call:hover {
             transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.4);
         }
         
         .btn-lose {
@@ -453,7 +501,6 @@
             background: rgba(255, 68, 68, 0.3);
         }
         
-        /* RIP SCREEN */
         .rip-container {
             text-align: center;
             padding: 50px 20px;
@@ -500,31 +547,28 @@
 </head>
 <body>
     <div class="container">
-        <!-- HEADER -->
         <div class="header">
             <div class="logo">⚡ ETERNAL NO NUT (END) ⚡</div>
             <div class="time-display" id="time-display">Carregando...</div>
             <div class="header-buttons">
                 <span class="user-badge" id="user-badge" style="display: none;"></span>
+                <button class="btn-header btn-profile" id="btn-profile-header" onclick="showProfile()" style="display: none;">MEU PERFIL</button>
                 <button class="btn-header" id="btn-login-header" onclick="openLoginModal()">LOGIN</button>
                 <button class="btn-header" id="btn-logout-header" onclick="logout()" style="display: none;">SAIR</button>
             </div>
         </div>
 
-        <!-- HOMEPAGE (Leaderboard Aberto) -->
         <div id="homepage" class="view active">
             <div class="title">🏆 LEADERBOARD</div>
             <div class="leaderboard" id="leaderboard"></div>
         </div>
 
-        <!-- PROFILE (Após Login) -->
         <div id="profile-view" class="view">
             <button class="back-btn" onclick="backToHome()">← Voltar ao Leaderboard</button>
             <div id="profile-content"></div>
         </div>
     </div>
 
-    <!-- LOGIN MODAL -->
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeLoginModal()">&times;</span>
@@ -558,24 +602,33 @@
         const passwords = {
             'Marcos V.': 'MarcolaDasBucetim',
             'Henrique F.': 'HenriqueChigurh',
-            'Heitor V.': 'Hector',
+            'Heitor V.': 'HectorTheFuckingCreed',
             'Tulio P.': 'TulioMontana',
             'Gabriel D.': 'GabrielMorgan'
         };
 
+        // Hierarquia fixa (1 = primeiro lugar se vivo)
+        const hierarchy = {
+            'Henrique F.': 1,
+            'Heitor V.': 2,
+            'Gabriel D.': 3,
+            'Tulio P.': 4,
+            'Marcos V.': 5
+        };
+
+        // Data de início: 19/11/2025 às 15:07 (Brasília)
         const startDate = new Date('2025-11-19T15:07:00-03:00');
 
         let warriors = {
-            'Marcos V.': { fullName: 'Marcos Vinicius Miranda', days: 0, alive: true, ripMsg: 'FALLEN WEAKLING - Marcos Vinicius Miranda se rendeu ao vício no dia {DIAS}. Você foi um grande bosta. A luxúria o consumiu, que era bem o esperado. RIP.' },
-            'Henrique F.': { fullName: 'Henrique Faria', days: 0, alive: true, ripMsg: 'FALLEN WARRIOR - Henrique Faria caiu no dia {DIAS}. Você era o mais fodastico de todos, sua morte nunca seria esperado, ate os mais fortes morrem. Respeito. RIP.' },
-            'Heitor V.': { fullName: 'Heitor Vieira de Oliveira', days: 0, alive: true, ripMsg: 'FALLEN WARRIOR - Heitor Vieira caiu no dia {DIAS}. Você era pra ter sido um dos melhores, mas ate os mais fortes morrem. RIP.' },
-            'Tulio P.': { fullName: 'Tulio Pessoa Mota', days: 0, alive: true, ripMsg: 'FALLEN MEDIOCRE - Tulio Pessoa caiu no dia {DIAS}. Você tinha potencial, mas jogou tudo fora por causa de bucetim. RIP.' },
-            'Gabriel D.': { fullName: 'Gabriel Damasceno', days: 0, alive: true, ripMsg: 'FALLEN MEDIOCRE - Gabriel Damasceno caiu no dia {DIAS}. Decepcao total. RIP.' }
+            'Marcos V.': { fullName: 'Marcus Vinicius Miranda', days: 0, alive: true, closeCalls: 0, ripMsg: 'FALLEN WEAKLING - Marcos Vinicius Miranda se rendeu ao vício no dia {DIAS}. Você foi um grande bosta. A luxúria o consumiu, que era bem o esperado. RIP.' },
+            'Henrique F.': { fullName: 'Henrique Faria', days: 0, alive: true, closeCalls: 0, ripMsg: 'FALLEN WARRIOR - Henrique Faria caiu no dia {DIAS}. Você era o mais fodastico de todos, sua morte nunca seria esperado, ate os mais fortes morrem. Respeito. RIP.' },
+            'Heitor V.': { fullName: 'Heitor Vieira de Oliveira', days: 0, alive: true, closeCalls: 0, ripMsg: 'FALLEN WARRIOR - Heitor Vieira caiu no dia {DIAS}. Você era pra ter sido um dos melhores, mas ate os mais fortes morrem. RIP.' },
+            'Tulio P.': { fullName: 'Tulio Pessoa Mota', days: 0, alive: true, closeCalls: 0, ripMsg: 'FALLEN MEDIOCRE - Tulio Pessoa caiu no dia {DIAS}. Você tinha potencial, mas jogou tudo fora por causa de bucetim. RIP.' },
+            'Gabriel D.': { fullName: 'Gabriel Damasceno', days: 0, alive: true, closeCalls: 0, ripMsg: 'FALLEN MEDIOCRE - Gabriel Damasceno caiu no dia {DIAS}. Decepcao total. RIP.' }
         };
 
         let currentUser = null;
 
-        // Atualizar relógio em tempo real
         function updateTime() {
             const now = new Date();
             const brasiliaTime = new Intl.DateTimeFormat('pt-BR', {
@@ -591,24 +644,29 @@
             document.getElementById('time-display').textContent = '🕐 ' + brasiliaTime;
         }
 
-        // Calcular dias desde o início
         function calculateDays(user) {
             if (!warriors[user].alive) return warriors[user].days;
             
+            // Pega a data atual em Brasília
             const now = new Date();
-            const brasiliaTime = new Date(now.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+            const brasiliaFormatter = new Intl.DateTimeFormat('pt-BR', {
+                timeZone: 'America/Sao_Paulo',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
             
-            let days = 0;
-            let current = new Date(startDate);
+            const nowParts = brasiliaFormatter.format(now).split('/');
+            const todayBrasilia = new Date(nowParts[2], nowParts[1] - 1, nowParts[0]);
             
-            while (current.toDateString() !== brasiliaTime.toDateString() && current <= brasiliaTime) {
-                current.setDate(current.getDate() + 1);
-                if (current.toDateString() !== brasiliaTime.toDateString() && current <= brasiliaTime) {
-                    days++;
-                }
-            }
+            // Data de início (19/11/2025)
+            const startDay = new Date(2025, 10, 19); // Mês é 0-indexed
             
-            return days;
+            // Calcula a diferença em dias
+            const diffTime = todayBrasilia.getTime() - startDay.getTime();
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            return Math.max(0, diffDays);
         }
 
         function getTitleForDays(days) {
@@ -640,23 +698,48 @@
                 .map(([name, data]) => ({
                     name,
                     days: calculateDays(name),
+                    hierarchy: hierarchy[name],
                     ...data
                 }))
-                .sort((a, b) => b.days - a.days);
+                .sort((a, b) => {
+                    // Vivos primeiro
+                    if (a.alive && !b.alive) return -1;
+                    if (!a.alive && b.alive) return 1;
+                    
+                    // Se ambos vivos, ordena por hierarquia
+                    if (a.alive && b.alive) {
+                        return a.hierarchy - b.hierarchy;
+                    }
+                    
+                    // Se ambos mortos, ordena por dias (quem durou mais fica em cima)
+                    return b.days - a.days;
+                });
 
             sorted.forEach((warrior, index) => {
                 const title = getTitleForDays(warrior.days);
                 const card = document.createElement('div');
                 card.className = `warrior-card ${warrior.alive ? '' : 'dead'}`;
                 
+                let closeCallHTML = '';
+                if (warrior.closeCalls > 0) {
+                    closeCallHTML = `<div class="warrior-close-call">⚠️ Quase perdeu: ${warrior.closeCalls}x</div>`;
+                }
+                
+                let ripMsgHTML = '';
+                if (!warrior.alive) {
+                    ripMsgHTML = `<div class="rip-message-card">${warrior.ripMsg.replace('{DIAS}', warrior.days)}</div>`;
+                }
+                
                 card.innerHTML = `
                     <div class="warrior-rank">#${index + 1}</div>
                     <div class="warrior-info">
-                        <div class="warrior-name">${warrior.name}</div>
+                        <div class="warrior-name ${warrior.alive ? '' : 'dead-name'}">${warrior.alive ? warrior.name : warrior.fullName}</div>
                         <div class="warrior-title">${title.emoji} ${title.title}</div>
                         <div class="warrior-status ${warrior.alive ? 'status-alive' : 'status-dead'}">
                             ${warrior.alive ? '✅ VIVO' : '💀 MORTO'}
                         </div>
+                        ${closeCallHTML}
+                        ${ripMsgHTML}
                     </div>
                     <div class="warrior-stats">
                         <div class="warrior-days">${warrior.days}</div>
@@ -694,6 +777,13 @@
 
             currentUser = username;
             closeLoginModal();
+            
+            document.getElementById('user-badge').textContent = currentUser;
+            document.getElementById('user-badge').style.display = 'block';
+            document.getElementById('btn-login-header').style.display = 'none';
+            document.getElementById('btn-logout-header').style.display = 'block';
+            document.getElementById('btn-profile-header').style.display = 'block';
+            
             showProfile();
         }
 
@@ -702,15 +792,11 @@
             document.getElementById('user-badge').style.display = 'none';
             document.getElementById('btn-login-header').style.display = 'block';
             document.getElementById('btn-logout-header').style.display = 'none';
+            document.getElementById('btn-profile-header').style.display = 'none';
             backToHome();
         }
 
         function showProfile() {
-            document.getElementById('user-badge').textContent = currentUser;
-            document.getElementById('user-badge').style.display = 'block';
-            document.getElementById('btn-login-header').style.display = 'none';
-            document.getElementById('btn-logout-header').style.display = 'block';
-
             const warrior = warriors[currentUser];
             const days = calculateDays(currentUser);
             const title = getTitleForDays(days);
@@ -724,7 +810,6 @@
                         <div class="rip-message">
                             ${warrior.ripMsg.replace('{DIAS}', warrior.days)}
                         </div>
-                        <button class="back-btn" onclick="backToHome()">← Voltar</button>
                     </div>
                 `;
             } else {
@@ -732,6 +817,7 @@
                     <div class="profile-header">
                         <div class="profile-name">${warrior.fullName}</div>
                         <div class="profile-days">${days}</div>
+                        <div class="days-label">DIAS</div>
                         <div class="profile-title">${title.emoji} ${title.title}</div>
                         <div class="profile-status status-alive">✅ VIVO NA BATALHA</div>
                     </div>
@@ -741,12 +827,17 @@
                             <div class="stat-value">${days}</div>
                             <div class="stat-label">Dias Atuais</div>
                         </div>
+                        <div class="stat-box">
+                            <div class="stat-value">${warrior.closeCalls}</div>
+                            <div class="stat-label">Quase Perdi</div>
+                        </div>
                     </div>
 
                     <div class="action-section">
-                        <h3>Como foi seu dia?</h3>
+                        <h3>⚠️ Status</h3>
                         <div class="action-buttons">
-                            <button class="btn-action btn-win" onclick="loseBattle()">💀 PERDI A BATALHA</button>
+                            <button class="btn-action btn-close-call" onclick="closeCall()">😰 QUASE PERDI</button>
+                            <button class="btn-action btn-lose" onclick="loseBattle()">💀 PERDI A BATALHA</button>
                         </div>
                     </div>
                 `;
@@ -763,11 +854,20 @@
             loadLeaderboard();
         }
 
+        function closeCall() {
+            if (warriors[currentUser].alive) {
+                warriors[currentUser].closeCalls++;
+                alert('😰 QUASE! Segura essa onda, soldado! Você registrou mais um "Quase Perdi"!');
+                showProfile();
+                loadLeaderboard();
+            }
+        }
+
         function loseBattle() {
             if (warriors[currentUser].alive) {
                 warriors[currentUser].alive = false;
                 warriors[currentUser].days = calculateDays(currentUser);
-                alert('💀 Voce tem que se fuder muito mesmo! Você foi eliminado.');
+                alert('💀 Voce tem que se fuder muito mesmo! Você foi eliminado cara.');
                 showProfile();
                 loadLeaderboard();
             }
