@@ -620,11 +620,11 @@
         const startDate = new Date('2025-11-19T15:07:00-03:00');
 
         let warriors = {
-            'Marcos V.': { fullName: 'Marcus Vinicius Miranda', days: 0, alive: true, closeCalls: 0, ripMsg: 'FALLEN WEAKLING - Marcos Vinicius Miranda se rendeu ao vício no dia {DIAS}. Você foi um grande bosta. A luxúria o consumiu, que era bem o esperado. RIP.' },
-            'Henrique F.': { fullName: 'Henrique Faria', days: 0, alive: true, closeCalls: 0, ripMsg: 'FALLEN WARRIOR - Henrique Faria caiu no dia {DIAS}. Você era o mais fodastico de todos, sua morte nunca seria esperado, ate os mais fortes morrem. Respeito. RIP.' },
-            'Heitor V.': { fullName: 'Heitor Vieira de Oliveira', days: 0, alive: true, closeCalls: 0, ripMsg: 'FALLEN WARRIOR - Heitor Vieira caiu no dia {DIAS}. Você era pra ter sido um dos melhores, mas ate os mais fortes morrem. RIP.' },
-            'Tulio P.': { fullName: 'Tulio Pessoa Mota', days: 0, alive: true, closeCalls: 0, ripMsg: 'FALLEN MEDIOCRE - Tulio Pessoa caiu no dia {DIAS}. Você tinha potencial, mas jogou tudo fora por causa de bucetim. RIP.' },
-            'Gabriel D.': { fullName: 'Gabriel Damasceno', days: 0, alive: true, closeCalls: 0, ripMsg: 'FALLEN MEDIOCRE - Gabriel Damasceno caiu no dia {DIAS}. Decepcao total. RIP.' }
+            'Marcos V.': { fullName: 'Marcus Vinicius Miranda', days: 3, alive: true, closeCalls: 0, ripMsg: 'FALLEN WEAKLING - Marcos Vinicius Miranda se rendeu ao vício no dia {DIAS}. Você foi um grande bosta. A luxúria o consumiu, que era bem o esperado. RIP.' },
+            'Henrique F.': { fullName: 'Henrique Faria', days: 3, alive: true, closeCalls: 0, ripMsg: 'FALLEN WARRIOR - Henrique Faria caiu no dia {DIAS}. Você era o mais fodastico de todos, sua morte nunca seria esperado, ate os mais fortes morrem. Respeito. RIP.' },
+            'Heitor V.': { fullName: 'Heitor Vieira de Oliveira', days: 3, alive: true, closeCalls: 0, ripMsg: 'FALLEN WARRIOR - Heitor Vieira caiu no dia {DIAS}. Você era pra ter sido um dos melhores, mas ate os mais fortes morrem. RIP.' },
+            'Tulio P.': { fullName: 'Tulio Pessoa Mota', days: 3, alive: true, closeCalls: 0, ripMsg: 'FALLEN MEDIOCRE - Tulio Pessoa caiu no dia {DIAS}. Você tinha potencial, mas jogou tudo fora por causa de bucetim. RIP.' },
+            'Gabriel D.': { fullName: 'Gabriel Damasceno', days: 3, alive: true, closeCalls: 0, ripMsg: 'FALLEN MEDIOCRE - Gabriel Damasceno caiu no dia {DIAS}. Decepcao total. RIP.' }
         };
 
         let currentUser = null;
@@ -857,7 +857,7 @@
         function closeCall() {
             if (warriors[currentUser].alive) {
                 warriors[currentUser].closeCalls++;
-                alert('😰 QUASE! Segura essa onda, soldado! Você registrou mais um "Quase Perdi"!');
+                alert('😰 Seu desgracado filha da puta, se vc perder vc vai ver! Vc registrou mais um "Quase Perdi"!');
                 showProfile();
                 loadLeaderboard();
             }
