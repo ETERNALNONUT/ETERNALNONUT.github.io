@@ -167,6 +167,36 @@
             z-index: 10;
         }
         
+        .warrior-card.reborn {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.2) 0%, rgba(34, 197, 94, 0.2) 100%);
+            border-color: #4ade80;
+            box-shadow: 0 0 30px rgba(74, 222, 128, 0.6);
+            animation: rebornGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes rebornGlow {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(74, 222, 128, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(74, 222, 128, 0.9);
+            }
+        }
+        
+        .warrior-card.reborn::after {
+            content: '🔄 RENASCIDO';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2em;
+            color: #4ade80;
+            text-shadow: 0 0 10px rgba(74, 222, 128, 0.8);
+            z-index: 10;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
         .warrior-rank {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 2.5em;
@@ -621,7 +651,7 @@
 
         let warriors = {
             'Marcos V.': { fullName: 'Marcus Vinicius Miranda', days: 6, alive: false, closeCalls: 0, ripMsg: 'FALLEN WEAKLING - Marcos Vinicius Miranda se rendeu ao vício no dia {DIAS}. Você foi um grande bosta. A luxúria o consumiu, que era bem o esperado. RIP.' },
-            'Henrique F.': { fullName: 'Henrique Faria', days: 7, alive: false, closeCalls: 2, ripMsg: 'FALLEN WARRIOR - Henrique Faria caiu no dia {DIAS}. Você era o mais fodastico de todos, sua morte nunca seria esperado, ate os mais fortes morrem. Respeito. RIP.' },
+            'Henrique F.': { fullName: 'Henrique Faria', days: 0, alive: true, closeCalls: 0, ripMsg: 'FALLEN WARRIOR - Henrique Faria caiu no dia {DIAS}. Você era o mais fodastico de todos, sua morte nunca seria esperado, ate os mais fortes morrem. Respeito. RIP.' },
             'Heitor V.': { fullName: 'Heitor Vieira de Oliveira', days: 8, alive: true, closeCalls: 1, ripMsg: 'FALLEN WARRIOR - Heitor Vieira caiu no dia {DIAS}. Você era pra ter sido um dos melhores, mas ate os mais fortes morrem. RIP.' },
             'Tulio P.': { fullName: 'Tulio Pessoa Mota', days: 3, alive: false, closeCalls: 0, ripMsg: 'FALLEN MEDIOCRE - Tulio Pessoa caiu no dia {DIAS}. Você tinha potencial, mas jogou tudo fora por causa de bucetim. RIP.' },
             'Gabriel D.': { fullName: 'Gabriel Damasceno', days: 8, alive: true, closeCalls: 0, ripMsg: 'FALLEN MEDIOCRE - Gabriel Damasceno caiu no dia {DIAS}. Decepcao total. RIP.' }
@@ -718,7 +748,7 @@
             sorted.forEach((warrior, index) => {
                 const title = getTitleForDays(warrior.days);
                 const card = document.createElement('div');
-                card.className = `warrior-card ${warrior.alive ? '' : 'dead'}`;
+                card.className = `warrior-card ${warrior.alive ? (warrior.reborn ? 'reborn' : '') : 'dead'}`;
                 
                 let closeCallHTML = '';
                 if (warrior.closeCalls > 0) {
@@ -857,6 +887,7 @@
         function closeCall() {
             if (warriors[currentUser].alive) {
                 warriors[currentUser].closeCalls++;
+                saveData();
                 alert('😰 QUASE! Segura essa onda, soldado! Você registrou mais um "Quase Perdi"!');
                 showProfile();
                 loadLeaderboard();
@@ -867,13 +898,16 @@
             if (warriors[currentUser].alive) {
                 warriors[currentUser].alive = false;
                 warriors[currentUser].days = calculateDays(currentUser);
+                warriors[currentUser].reborn = false;
+                saveData();
                 alert('💀 Voce tem que se fuder muito mesmo! Você foi eliminado cara.');
                 showProfile();
                 loadLeaderboard();
             }
         }
 
-        // Inicializar
+        // Inicializar - Carrega dados ANTES de tudo
+        loadData();
         updateTime();
         setInterval(updateTime, 1000);
         loadLeaderboard();
